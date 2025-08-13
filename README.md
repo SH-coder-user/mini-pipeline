@@ -1,11 +1,11 @@
-# 📊 Mini Data Pipeline Project  
-가짜 주문 데이터 → ETL → 데이터베이스 적재 → API → 대시보드 시각화  
+# 📊 Mini Data Pipeline Project
+가짜 주문 데이터 → ETL → 데이터베이스 적재 → API → 대시보드 시각화
 **Docker + GitHub Actions + Docker Hub 자동 배포 파이프라인**
 
 ---
 
 ## 🚀 프로젝트 개요
-이 프로젝트는 **데이터 엔지니어링 기본기**를 7일 안에 완성하는 미니 파이프라인입니다.  
+이 프로젝트는 미니 파이프라인구축입니다.
 로컬 개발부터 Docker 컨테이너화, GitHub Actions를 통한 Docker Hub 자동 배포까지 전 과정을 경험할 수 있습니다.
 
 ### 📌 핵심 기능
@@ -86,7 +86,7 @@ docker run --rm -p 8501:8501 -v $(pwd)/data:/app/data mini-pipeline:local
 docker compose build
 docker compose up -d
 ```
-- **대시보드**: http://localhost:8501  
+- **대시보드**: http://localhost:8501
 - **API**: http://localhost:8000/health
 
 ---
