@@ -106,7 +106,7 @@ docker compose up -d
 ---
 
 ## 📈 대시보드 미리보기
-![dashboard preview](https://via.placeholder.com/900x400?text=Dashboard+Preview)
+![dashboard preview](images/dashboard-preview.jpg)
 
 - 일자별 매출 추이
 - 지역별/제품별 매출 분석
