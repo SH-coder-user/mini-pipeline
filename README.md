@@ -136,8 +136,8 @@ docker compose up -d
 ---
 
 ## 👤 Author
-- **GitHub**: [your-username](https://github.com/your-username)
-- **Docker Hub**: [dockerhub-username](https://hub.docker.com/u/dockerhub-username)
+- **GitHub**: [SHK](https://github.com/skadlf915)
+- **Docker Hub**: [SHK](https://hub.docker.com/u/skadlf915)
 
 ---
 ✨ _데이터 엔지니어링의 핵심 흐름을, 로컬부터 클라우드 배포까지 한 번에 경험할 수 있는 학습용 프로젝트입니다._
