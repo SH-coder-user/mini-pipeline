@@ -13,7 +13,7 @@ COPY app/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY app /app/app
-COPY .env /app/.env
+
 
 # 시간대
 ENV TZ=Asia/Seoul
