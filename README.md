@@ -1,12 +1,12 @@
 # 📊 Mini Data Pipeline Project
-가짜 주문 데이터 → ETL → PostgreSQL 적재 → API → 대시보드 시각화  
+가짜 주문 데이터 → ETL → PostgreSQL 적재 → API → 대시보드 시각화
 **Docker Compose + GitHub Actions + Docker Hub 자동 배포 파이프라인**
 
 ---
 
 ## 🚀 프로젝트 개요
-데이터 엔지니어링 기본기를 빠르게 체험할 수 있는 **학습형 미니 파이프라인**입니다.  
-로컬 실행부터 Docker 컨테이너화, CI/CD를 통한 배포까지 전 과정을 경험할 수 있습니다.
+데이터 엔지니어링 기본기를 빠르게 체험할 수 있는 **학습형 미니 파이프라인**을 구축했습니다.
+로컬 실행부터 Docker 컨테이너화, CI/CD를 통한 배포까지 전 과정을 담았습니다.
 
 ---
 
@@ -80,17 +80,17 @@ docker run --rm -p 8501:8501 -v $(pwd)/data:/app/data mini-pipeline:local
 docker compose build
 docker compose up -d
 ```
-- 대시보드: http://localhost:8501  
-- API: http://localhost:8000/health  
+- 대시보드: http://localhost:8501
+- API: http://localhost:8000/health
 
 ---
 
 ## 🔄 GitHub Actions → Docker Hub 자동 배포
-1. Docker Hub 리포지토리 생성: `username/mini-pipeline`  
-2. GitHub Secrets 추가:  
-   - `DOCKERHUB_USERNAME`  
-   - `DOCKERHUB_TOKEN`  
-3. main 브랜치 push 시 자동 빌드 & 푸시  
+1. Docker Hub 리포지토리 생성: `username/mini-pipeline`
+2. GitHub Secrets 추가:
+   - `DOCKERHUB_USERNAME`
+   - `DOCKERHUB_TOKEN`
+3. main 브랜치 push 시 자동 빌드 & 푸시
 4. 서버에서 실행:
 ```bash
 docker compose pull
@@ -100,11 +100,11 @@ docker compose up -d
 ---
 
 ## 📈 대시보드 미리보기
-![dashboard preview](images/dashboard-preview.png)
+![dashboard preview](images/dashboard-preview.jpg)
 
-- 일자별 매출 추이  
-- 지역별/제품별 매출 분석  
-- 총 매출, 주문 수, 평균 주문 금액 KPI  
+- 일자별 매출 추이
+- 지역별/제품별 매출 분석
+- 총 매출, 주문 수, 평균 주문 금액 KPI
 
 ---
 
@@ -122,25 +122,24 @@ docker compose up -d
 ---
 
 ## 🛡️ 주요 이슈 해결
-- FK로 인한 TRUNCATE 오류 → `TRUNCATE fact_orders, dim_date;` 동시 실행  
-- ModuleNotFoundError → `from app.pipeline import ...` + `app/__init__.py`  
-- TabError → 스페이스 4칸 들여쓰기 통일  
-- UndefinedTable → API startup에서 스키마 보장, 빈값은 0/[] 반환  
+- FK로 인한 TRUNCATE 오류 → `TRUNCATE fact_orders, dim_date;` 동시 실행
+- ModuleNotFoundError → `from app.pipeline import ...` + `app/__init__.py`
+- TabError → 스페이스 4칸 들여쓰기 통일
+- UndefinedTable → API startup에서 스키마 보장, 빈값은 0/[] 반환
 - sqlite_master 오류 → `to_sql(..., conn, ...)` 사용 (`conn.connection` 금지)
 
 ---
 
 ## 💡 확장 아이디어
-- Airflow/Dagster로 워크플로우 관리  
-- Great Expectations로 데이터 품질 검증  
-- 클라우드 DB(RDS, Cloud SQL) 연동  
-- 대시보드에 필터/권한/캐시 기능 추가  
+- Airflow/Dagster로 워크플로우 관리
+- Great Expectations로 데이터 품질 검증
+- 클라우드 DB(RDS, Cloud SQL) 연동
+- 대시보드에 필터/권한/캐시 기능 추가
 
 ---
 
 ## 👤 Author
-- GitHub: [your-username](https://github.com/your-username)  
-- Docker Hub: [dockerhub-username](https://hub.docker.com/u/dockerhub-username)
+- GitHub: [KSH](https://github.com/SH-coder-user/mini-pipeline)
+- Docker Hub: [dockerhub-KSH](https://hub.docker.com/repository/docker/skadlf915/mini-pipeline/general)
 
 ---
-✨ _로컬부터 클라우드 배포까지 데이터 엔지니어링 파이프라인의 핵심을 경험할 수 있는 학습용 프로젝트입니다._
