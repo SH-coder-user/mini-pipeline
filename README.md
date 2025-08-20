@@ -1,21 +1,23 @@
 # 📊 Mini Data Pipeline Project
-가짜 주문 데이터 → ETL → 데이터베이스 적재 → API → 대시보드 시각화
-**Docker + GitHub Actions + Docker Hub 자동 배포 파이프라인**
+가짜 주문 데이터 → ETL → PostgreSQL 적재 → API → 대시보드 시각화  
+**Docker Compose + GitHub Actions + Docker Hub 자동 배포 파이프라인**
 
 ---
 
 ## 🚀 프로젝트 개요
-이 프로젝트는 미니 파이프라인구축입니다.
-로컬 개발부터 Docker 컨테이너화, GitHub Actions를 통한 Docker Hub 자동 배포까지 전 과정을 경험할 수 있습니다.
+데이터 엔지니어링 기본기를 빠르게 체험할 수 있는 **학습형 미니 파이프라인**입니다.  
+로컬 실행부터 Docker 컨테이너화, CI/CD를 통한 배포까지 전 과정을 경험할 수 있습니다.
 
-### 📌 핵심 기능
-- **ETL 파이프라인**: 가짜 주문 데이터 생성 → 변환 → DB 적재
-- **데이터베이스**: SQLite(기본) → PostgreSQL(확장)
-- **대시보드**: Streamlit을 통한 매출/주문 시각화
-- **API 서버**: FastAPI로 데이터 조회/ETL 트리거 제공
-- **스케줄러**: 매일 09:00 자동 ETL 실행(APScheduler)
+---
+
+## 📌 핵심 기능
+- **ETL 파이프라인**: 주문 데이터 생성 → 변환 → PostgreSQL 적재
+- **데이터베이스**: PostgreSQL 16 (초기 버전은 SQLite)
+- **API 서버**: FastAPI (ETL 트리거 & 데이터 조회)
+- **대시보드**: Streamlit (API 호출 기반 KPI/차트)
+- **스케줄러**: APScheduler (매일 09:00 자동 ETL 실행)
 - **CI/CD**: GitHub Actions → Docker Hub 자동 빌드/푸시
-- **컨테이너 오케스트레이션**: docker-compose로 전체 서비스 실행
+- **컨테이너 오케스트레이션**: docker-compose로 전체 실행
 
 ---
 
@@ -26,27 +28,27 @@
 | 데이터 처리      | pandas |
 | 대시보드         | Streamlit |
 | API 서버         | FastAPI, Uvicorn |
-| 데이터베이스     | SQLite, PostgreSQL |
+| 데이터베이스     | PostgreSQL, SQLite(초기) |
 | 배포/환경        | Docker, docker-compose |
 | 스케줄링         | APScheduler |
 | CI/CD            | GitHub Actions, Docker Hub |
 
 ---
 
-## 📂 폴더 구조
+## 📂 프로젝트 구조
 ```
 mini-pipeline/
 ├─ app/
-│  ├─ pipeline.py          # ETL 파이프라인
-│  ├─ streamlit_app.py     # 대시보드
-│  ├─ api.py               # FastAPI 서버
-│  ├─ scheduler.py         # ETL 스케줄러
-│  ├─ requirements.txt     # 의존성 목록
-├─ data/                   # CSV/DB 저장 (볼륨 마운트)
-├─ .env                    # 환경변수 설정
-├─ Dockerfile              # 공용 베이스 이미지
-├─ docker-compose.yml      # 서비스 오케스트레이션
-├─ .github/workflows/      # GitHub Actions 워크플로우
+│  ├─ pipeline.py        # ETL 파이프라인
+│  ├─ api.py             # FastAPI 서버
+│  ├─ streamlit_app.py   # Streamlit 대시보드
+│  ├─ scheduler.py       # ETL 스케줄러
+│  └─ requirements.txt   # 의존성 목록
+├─ data/                 # CSV/DB 저장 (볼륨 마운트)
+├─ .env                  # 환경변수 설정
+├─ Dockerfile            # 베이스 이미지
+├─ docker-compose.yml    # 서비스 오케스트레이션
+├─ .github/workflows/    # GitHub Actions
 │  └─ docker-image.yml
 └─ README.md
 ```
@@ -55,89 +57,90 @@ mini-pipeline/
 
 ## ⚙️ 실행 방법
 
-### 1️⃣ 로컬 실행 (개발 단계)
+### 1️⃣ 로컬 실행
 ```bash
-# 의존성 설치
 python3 -m pip install -r app/requirements.txt
-
-# ETL 실행
 python3 app/pipeline.py
-
-# Streamlit 대시보드 실행
 streamlit run app/streamlit_app.py
 ```
-- 대시보드: http://localhost:8501
+- 접속: http://localhost:8501
 
 ---
 
-### 2️⃣ Docker 로컬 실행
+### 2️⃣ Docker 단일 실행
 ```bash
-# 빌드
 docker build -t mini-pipeline:local .
-
-# 실행
 docker run --rm -p 8501:8501 -v $(pwd)/data:/app/data mini-pipeline:local
 ```
 
 ---
 
-### 3️⃣ docker-compose (전체 서비스 실행)
+### 3️⃣ docker-compose (전체 실행)
 ```bash
 docker compose build
 docker compose up -d
 ```
-- **대시보드**: http://localhost:8501
-- **API**: http://localhost:8000/health
+- 대시보드: http://localhost:8501  
+- API: http://localhost:8000/health  
 
 ---
 
 ## 🔄 GitHub Actions → Docker Hub 자동 배포
-1. **Docker Hub 리포지토리 생성**: `username/mini-pipeline`
-2. GitHub 리포지토리 `Settings → Secrets and variables → Actions`에서 추가:
-   - `DOCKERHUB_USERNAME`
-   - `DOCKERHUB_TOKEN`
-3. main 브랜치에 push 시 자동 빌드 & 푸시
-4. 원격 서버에서 실행:
+1. Docker Hub 리포지토리 생성: `username/mini-pipeline`  
+2. GitHub Secrets 추가:  
+   - `DOCKERHUB_USERNAME`  
+   - `DOCKERHUB_TOKEN`  
+3. main 브랜치 push 시 자동 빌드 & 푸시  
+4. 서버에서 실행:
 ```bash
-docker pull username/mini-pipeline:latest
+docker compose pull
 docker compose up -d
 ```
 
 ---
 
 ## 📈 대시보드 미리보기
-![dashboard preview](images/dashboard-preview.jpg)
+![dashboard preview](images/dashboard-preview.png)
 
-- 일자별 매출 추이
-- 지역별/제품별 매출 분석
-- 총 매출, 주문 수, 평균 주문 금액 KPI
+- 일자별 매출 추이  
+- 지역별/제품별 매출 분석  
+- 총 매출, 주문 수, 평균 주문 금액 KPI  
 
 ---
 
-## 📅 개발 일정 (7일 완성 플랜)
+## 📅 7일 완성 플랜
 | Day | 작업 내용 |
 |-----|-----------|
-| 1일차 | ETL 파이프라인 (CSV → SQLite) |
+| 1일차 | CSV 생성 + SQLite 적재 |
 | 2일차 | Streamlit 대시보드 |
-| 3일차 | Dockerfile 작성 & 이미지 빌드 |
-| 4일차 | GitHub 리포지토리 연동 |
+| 3일차 | Dockerfile 작성 |
+| 4일차 | GitHub 연동 |
 | 5일차 | Docker Hub 설정 |
-| 6일차 | GitHub Actions CI/CD 구축 |
-| 7일차 | PostgreSQL + FastAPI + 스케줄러 + docker-compose 확장 |
+| 6일차 | GitHub Actions CI/CD |
+| 7일차 | PostgreSQL + FastAPI + Scheduler + Compose 확장 |
+
+---
+
+## 🛡️ 주요 이슈 해결
+- FK로 인한 TRUNCATE 오류 → `TRUNCATE fact_orders, dim_date;` 동시 실행  
+- ModuleNotFoundError → `from app.pipeline import ...` + `app/__init__.py`  
+- TabError → 스페이스 4칸 들여쓰기 통일  
+- UndefinedTable → API startup에서 스키마 보장, 빈값은 0/[] 반환  
+- sqlite_master 오류 → `to_sql(..., conn, ...)` 사용 (`conn.connection` 금지)
 
 ---
 
 ## 💡 확장 아이디어
-- Airflow/Dagster로 워크플로우 관리
-- 데이터 품질 체크(Great Expectations)
-- 클라우드 DB(RDS, Cloud SQL) 연결
-- 사용자 인증이 있는 대시보드
+- Airflow/Dagster로 워크플로우 관리  
+- Great Expectations로 데이터 품질 검증  
+- 클라우드 DB(RDS, Cloud SQL) 연동  
+- 대시보드에 필터/권한/캐시 기능 추가  
 
 ---
 
 ## 👤 Author
-- **GitHub**: [미니파이프라인](https://github.com/SH-coder-user/mini-pipeline)
-- **Docker Hub**: [미니파이프라인](https://hub.docker.com/r/skadlf915/mini-pipeline)
+- GitHub: [your-username](https://github.com/your-username)  
+- Docker Hub: [dockerhub-username](https://hub.docker.com/u/dockerhub-username)
 
 ---
-✨ _데이터 엔지니어링의 핵심 흐름을, 로컬부터 클라우드 배포까지 한 번에 경험할 수 있는 학습용 프로젝트입니다._
+✨ _로컬부터 클라우드 배포까지 데이터 엔지니어링 파이프라인의 핵심을 경험할 수 있는 학습용 프로젝트입니다._
