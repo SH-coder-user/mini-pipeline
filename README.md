@@ -117,7 +117,7 @@ docker compose up -d
 | 4일차 | GitHub 연동 |
 | 5일차 | Docker Hub 설정 |
 | 6일차 | GitHub Actions CI/CD |
-| 7일차 | PostgreSQL + FastAPI + Scheduler + Compose 확장 |
+| 7일 ~ 10일 | PostgreSQL + FastAPI + Scheduler + Compose 확장 |
 
 ---
 
